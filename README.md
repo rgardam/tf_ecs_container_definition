@@ -9,13 +9,15 @@ Input variables
 
  * `container_name` - (string) **REQUIRED** - Name/name prefix to apply to the resources in the module.
  * `image` - (string) **REQUIRED** - The docker image in use
- * `container_port` - (string) OPTIONAL -App port to expose in the container. Default 8080.
+ * `port_mappings` - (list) OPTIONAL - list of maps of port_mappings. defaults: []
  * `cpu`- (string) OPTIONAL -The CPU limit for this container definition
  * `memory`- (string) OPTIONAL - The memory limit for this container definition
+ * `dns_servers` - (list) OPTIONAL - List of dns servers to pass into the container 
  * `env`: (map) OPTIONAL - map with environment variables
  * `metadata`: (map) OPTIONAL - Set of metadata for this container. It will be passed as environment variables (key uppercased) and labels.
  * `mountpoint`: (map) OPTIONAL - Configuration of one mountpoint for this volume. Map with the values `sourceVolume`, `containerPath` and (optional) `readOnly` .
-
+ * `log_driver` - (string) OPTIONAL - Log driver to be used by the containers. Must be supported by ecs-agent
+ * `log_configuration_options`: (map) OPTIONAL - Log configuration options
 Usage
 -----
 
@@ -25,9 +27,26 @@ module "container_defintions" {
 
   name           = "some-app"
   image          = "repo/image"
-  container_port = "8080"
   cpu            = 1024
   memory         = 256
+  
+  dns_servers     = ["172.17.0.1"]
+  
+  log_configuration_options = {
+    labels = "com.amazonaws.ecs.container-name"
+    env = "container_version,environment"
+  }
+
+  port_mappings = 
+  [
+    {
+      containerPort = 80
+    },
+    {
+      containerPort = 9090
+      hostPort = 9090 
+    }
+  ]
 
   container_env = {
     VAR1 = "value1"

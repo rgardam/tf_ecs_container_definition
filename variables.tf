@@ -22,20 +22,10 @@ variable "dns_servers" {
   default = []
 }
 
-variable "portMappings" {
+variable "port_mappings" {
   description = "Port mapping that includes multiple container_port and host_port definitions"
   type = "list"
   default = []
-}
-
-variable "container_port" {
-  description = "App port to expose in the container"
-  default     = "8080"
-}
-
-variable "host_port" {
-  description = "App port to expose in the host"
-  default     = "8080"
 }
 
 variable "container_env" {
