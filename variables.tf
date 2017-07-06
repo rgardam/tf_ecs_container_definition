@@ -16,8 +16,19 @@ variable "memory" {
   default     = "256"
 }
 
+variable "portMappings" {
+  description = "Port mapping that includes multiple container_port and host_port definitions"
+  type = "map"
+  default = {}
+}
+
 variable "container_port" {
   description = "App port to expose in the container"
+  default     = "8080"
+}
+
+variable "host_port" {
+  description = "App port to expose in the host"
   default     = "8080"
 }
 

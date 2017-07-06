@@ -5,7 +5,7 @@ data "template_file" "container_definitions" {
   vars {
     image          = "${var.image}"
     container_name = "${var.name}"
-    container_port = "${var.container_port}"
+    portMappings   = "${join(",", data.template_file._port_mapping.*.rendered)}"
     cpu            = "${var.cpu}"
     mem            = "${var.memory}"
 
@@ -73,4 +73,12 @@ resource "null_resource" "_jsonencode_metadata_env" {
   }
 
   count = "${length(var.metadata)}"
+}
+
+data "template_file" "_port_mapping" {
+  count    = "${length(var.portMappings)}"
+  template = "$${val}"
+  vars {
+    val = "${jsonencode(var.portMappings[count.index])}"
+  }
 }
