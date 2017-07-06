@@ -16,6 +16,12 @@ variable "memory" {
   default     = "256"
 }
 
+variable "dns_servers" {
+  description = "List of dns servers to pass into the container"
+  type = "list"
+  default = []
+}
+
 variable "portMappings" {
   description = "Port mapping that includes multiple container_port and host_port definitions"
   type = "list"
@@ -48,4 +54,15 @@ variable "mountpoint" {
   description = "Mountpoint map with 'sourceVolume' and 'containerPath' and 'readOnly' (optional)."
   type        = "map"
   default     = {}
+}
+
+variable "log_driver" {
+  description = "Log driver to be used by the containers. Must be supported by ecs-agent"
+  default = "json-file" 
+}
+
+variable "log_configuration_options" {
+  description = "Log configuration options"
+  type = "map"
+  default = {}
 }

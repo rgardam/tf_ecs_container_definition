@@ -6,8 +6,12 @@ data "template_file" "container_definitions" {
     image          = "${var.image}"
     container_name = "${var.name}"
     portMappings   = "${join(",", data.template_file._port_mapping.*.rendered)}"
+    dns_servers    = "${jsonencode(var.dns_servers)}"
     cpu            = "${var.cpu}"
     mem            = "${var.memory}"
+
+    log_driver     = "${var.log_driver}"
+    log_configuration_options = "${join(",", data.template_file._log_options.*.rendered)}"
 
     container_env = "${
       join (
@@ -80,5 +84,12 @@ data "template_file" "_port_mapping" {
   template = "$${val}"
   vars {
     val = "${jsonencode(var.portMappings[count.index])}"
+  }
+}
+
+data "template_file" "_log_options" {
+  template = "$${val}"
+  vars {
+    val = "${jsonencode(var.log_configuration_options)}"
   }
 }
