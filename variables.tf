@@ -18,8 +18,8 @@ variable "memory" {
 
 variable "portMappings" {
   description = "Port mapping that includes multiple container_port and host_port definitions"
-  type = "map"
-  default = {}
+  type = "list"
+  default = []
 }
 
 variable "container_port" {
