@@ -75,10 +75,11 @@ resource "null_resource" "_jsonencode_metadata_env" {
   count = "${length(var.metadata)}"
 }
 
+
 data "template_file" "_port_mapping" {
   count    = "${length(var.portMappings)}"
   template = "$${val}"
   vars {
-    val = "${jsonencode(var.portMappings[count.index])}"
+    val = "${jsonencode(var.portMappings)}"
   }
 }
